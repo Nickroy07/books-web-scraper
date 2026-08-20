@@ -1,73 +1,97 @@
-# Books Web Scraper Dashboard
+# BOOKSCOPE — Web Data → Intelligence → Decision
 
-A Bright Data scraper + static web dashboard that turns scraped book data into an interactive analytics experience.
+BOOKSCOPE turns scraped book data from Books to Scrape into a SaaS-style intelligence dashboard for discovery, comparison, and decision support.
 
-## Project Structure
+## Problem
+Raw scraped datasets are useful, but hard to explore quickly for trends, opportunities, and value.
 
-```text
-books-web-scraper/
-├── data/
-│   ├── example-output.json
-│   └── j_msx13h3f10nyknkkpk.csv
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── Script.js
-└── scraper/
-    └── interaction-code.js
+## Solution
+BOOKSCOPE processes the real scraped dataset (CSV + JSON sample) and delivers:
+- KPI analytics
+- Search/filter/sort exploration
+- Smart recommendations
+- Auto-generated dataset insights
+- Transparent value scoring
+
+## Why this matters
+Structured web data becomes more valuable when users can rapidly identify price bands, rating quality, availability, and best-value options.
+
+## Features
+- Professional dark analytics dashboard UI
+- Real-time KPIs from live dataset
+- Search by title
+- Filters: rating, price range, availability
+- Sorting: price low/high, rating high, title A-Z
+- Visualizations:
+  - Price distribution
+  - Rating distribution
+  - Availability split
+  - Rating vs price scatter
+- Smart Picks:
+  - Best Value
+  - Top Rated
+  - Budget Picks
+  - In Stock Picks
+- Book Intelligence insights (labeled as Dataset Insight)
+- Value Score (0–100): `(ratingNormalized * 0.7) + (priceDiscount * 0.3)`
+
+## Architecture / Pipeline
+Target Website (Books to Scrape)
+↓
+Bright Data Scraper Studio
+↓
+Structured CSV / JSON
+↓
+Frontend Data Processing
+↓
+BOOKSCOPE Dashboard
+↓
+Insights & Recommendations
+
+## Bright Data integration
+Data collection is performed with Bright Data Scraper Studio. Scraper logic remains in `scraper/interaction-code.js`.
+
+## Dataset
+Main dataset:
+- `/data/j_msx13h3f10nyknkkpk.csv` (1000 books)
+
+Sample dataset:
+- `/data/example-output.json`
+
+Parsed fields used in UI:
+- Title
+- Price
+- Rating
+- Availability
+- Product URL
+
+## Frontend
+- `/frontend/index.html`
+- `/frontend/style.css`
+- `/frontend/Script.js`
+
+Root redirect for GitHub Pages:
+- `/index.html` → `/frontend/index.html`
+
+## Screenshots
+- Add dashboard screenshots here.
+
+## Run locally
+Open `frontend/index.html` through a local static server (recommended):
+
+```bash
+cd books-web-scraper
+python -m http.server 8000
 ```
 
-## Data Format Inspected
+Then open:
+- `http://localhost:8000/frontend/index.html`
 
-The dashboard dynamically reads existing files from `data/` (without modifying them):
+## GitHub Pages deployment
+The repository root `index.html` redirects to the dashboard at `frontend/index.html`, keeping paths relative and compatible with `/books-web-scraper/` hosting.
 
-- `example-output.json` includes fields like:
-  - `title`
-  - `price` (string like `£54.00`)
-  - `rating` (word values like `Five`)
-  - `availability`
-  - `product_page_url`
-- `j_msx13h3f10nyknkkpk.csv` includes:
-  - `title`, `price`, `rating`, `availability`
-  - `product_url` (cover image URL)
-  - `product_page_url`
-  - metadata fields (`input_url`, `warning`, `error`, etc.)
-
-`Script.js` safely normalizes both formats (price parsing, rating mapping, availability normalization) and falls back from CSV to JSON if needed.
-
-## Dashboard Features
-
-- Responsive modern UI with hero section and professional cards/table
-- Loading state, empty-state messaging, and data-load error banner
-- Live search by title
-- Filters: rating, availability, min/max price
-- Sorting: title, price, rating (card/table integrated)
-- Analytics cards:
-  - total books
-  - average price
-  - average rating
-  - available books
-  - highest/lowest price
-- Lightweight client-side charts (canvas):
-  - price distribution
-  - rating distribution
-  - availability breakdown
-- Paginated data table with sortable headers
-- Book details modal with “View Product” button
-- Export filtered dataset as JSON or CSV
-- Dark/light theme toggle
-- Presentation sections: How it works, architecture, scraper statistics
-
-## GitHub Pages / Local Viewing
-
-This project remains static-site compatible.
-
-1. Open `frontend/index.html` in a static server context (or via GitHub Pages).
-2. Ensure the `data/` folder remains present at repository root.
-
-Because data is fetched client-side, direct `file://` opening may be blocked by browser security in some environments. A local static server is recommended for local preview.
-
-## Data Source
-
-- https://books.toscrape.com/
-- Scraper built and executed with Bright Data Scraper Studio.
+## Future improvements
+- Category-level trend analysis
+- Time-series snapshots over multiple scraper runs
+- Export filtered views
+- User-defined scoring weights

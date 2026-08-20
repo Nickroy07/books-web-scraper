@@ -3,177 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Books Web Scraper Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>BOOKSCOPE — Web Data Intelligence</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="loading-overlay" class="loading-overlay" aria-live="polite">
-    <div class="spinner"></div>
-    <p>Loading scraped data...</p>
-  </div>
-
-  <header class="hero">
-    <div class="container nav-row">
+  <div class="app-shell">
+    <nav class="navbar">
       <div>
-        <p class="badge">Hackathon Dashboard</p>
-        <h1>Books Web Scraper</h1>
-        <p class="hero-subtitle">Interactive analytics and exploration for scraped book intelligence.</p>
+        <p class="brand">BOOKSCOPE</p>
+        <p class="tagline">Web Data → Intelligence → Decision</p>
       </div>
-      <button id="theme-toggle" class="btn btn-outline" type="button" aria-label="Toggle dark mode">🌙 Dark</button>
-    </div>
-  </header>
+      <ul class="nav-links">
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#explore">Explore</a></li>
+        <li><a href="#insights">Insights</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
 
-  <main class="container">
-    <section id="error-banner" class="error-banner hidden" role="alert"></section>
+    <header class="hero" id="dashboard">
+      <div>
+        <p class="status-pill" id="dataset-status">Loading dataset…</p>
+        <h1>Turn scraped book data into actionable intelligence.</h1>
+        <p class="hero-copy">BOOKSCOPE transforms structured web-scraped book data into searchable analytics, comparisons, and intelligent recommendations.</p>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric"><span id="hero-count">0</span><small>Books Indexed</small></div>
+        <div class="metric"><span id="hero-updated">—</span><small>Last Updated</small></div>
+        <div class="metric"><span>Books to Scrape</span><small>Data Source</small></div>
+      </div>
+    </header>
 
-    <section class="panel controls-panel">
+    <section class="kpi-grid" aria-label="KPI Dashboard">
+      <article class="card"><h2>Total Books</h2><p id="kpi-total">0</p></article>
+      <article class="card"><h2>Avg Price</h2><p id="kpi-avg-price">£0.00</p></article>
+      <article class="card"><h2>Avg Rating</h2><p id="kpi-avg-rating">0.00</p></article>
+      <article class="card"><h2>In Stock %</h2><p id="kpi-in-stock">0%</p></article>
+      <article class="card"><h2>Highest Rated</h2><p id="kpi-highest">—</p></article>
+      <article class="card"><h2>Lowest Price</h2><p id="kpi-lowest">—</p></article>
+    </section>
+
+    <section class="card controls" id="explore">
+      <h2>Search & Filter</h2>
       <div class="controls-grid">
-        <label>
-          Search title
-          <input id="search-input" type="search" placeholder="Type to search books..." />
+        <label>Search title
+          <input id="search-input" type="search" placeholder="Search books by title">
         </label>
-
-        <label>
-          Rating
+        <label>Minimum rating
           <select id="rating-filter">
-            <option value="all">All ratings</option>
-            <option value="5">Five</option>
-            <option value="4">Four</option>
-            <option value="3">Three</option>
-            <option value="2">Two</option>
-            <option value="1">One</option>
+            <option value="0">All ratings</option>
+            <option value="1">1+ Stars</option>
+            <option value="2">2+ Stars</option>
+            <option value="3">3+ Stars</option>
+            <option value="4">4+ Stars</option>
+            <option value="5">5 Stars</option>
           </select>
         </label>
-
-        <label>
-          Availability
+        <label>Minimum price (£)
+          <input id="min-price-filter" type="number" min="0" step="0.01" placeholder="0">
+        </label>
+        <label>Maximum price (£)
+          <input id="max-price-filter" type="number" min="0" step="0.01" placeholder="100">
+        </label>
+        <label>Availability
           <select id="availability-filter">
             <option value="all">All</option>
-            <option value="in">In stock</option>
-            <option value="out">Out of stock</option>
+            <option value="in-stock">In Stock</option>
+            <option value="out-of-stock">Out of Stock</option>
           </select>
         </label>
-
-        <label>
-          Min price (£)
-          <input id="price-min" type="number" min="0" step="0.01" placeholder="0" />
-        </label>
-
-        <label>
-          Max price (£)
-          <input id="price-max" type="number" min="0" step="0.01" placeholder="100" />
-        </label>
-
-        <label>
-          Sort by
+        <label>Sort by
           <select id="sort-select">
-            <option value="title-asc">Title (A-Z)</option>
-            <option value="title-desc">Title (Z-A)</option>
-            <option value="price-asc">Price (Low-High)</option>
-            <option value="price-desc">Price (High-Low)</option>
-            <option value="rating-desc">Rating (High-Low)</option>
-            <option value="rating-asc">Rating (Low-High)</option>
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating-desc">Rating: High → Low</option>
+            <option value="title-asc">Title: A → Z</option>
           </select>
         </label>
       </div>
+      <p id="result-count" class="result-count">0 books shown</p>
+    </section>
 
-      <div class="action-row">
-        <button id="reset-filters" class="btn btn-outline" type="button">Reset filters</button>
-        <button id="export-json" class="btn" type="button">Export JSON</button>
-        <button id="export-csv" class="btn" type="button">Export CSV</button>
+    <section class="chart-grid" aria-label="Data Visualization">
+      <article class="card"><h2>Price Distribution</h2><div id="price-chart" class="chart"></div></article>
+      <article class="card"><h2>Rating Distribution</h2><div id="rating-chart" class="chart"></div></article>
+      <article class="card"><h2>Availability Distribution</h2><div id="availability-chart" class="chart"></div></article>
+      <article class="card"><h2>Rating vs Price</h2><svg id="scatter-chart" class="scatter-chart" viewBox="0 0 440 220" role="img" aria-label="Rating versus price scatter chart"></svg></article>
+    </section>
+
+    <section class="card smart-picks">
+      <h2>Smart Picks</h2>
+      <div class="pick-grid">
+        <div><h3>Best Value</h3><div id="pick-best-value" class="pick-list"></div></div>
+        <div><h3>Top Rated</h3><div id="pick-top-rated" class="pick-list"></div></div>
+        <div><h3>Budget Picks</h3><div id="pick-budget" class="pick-list"></div></div>
+        <div><h3>In Stock Picks</h3><div id="pick-stock" class="pick-list"></div></div>
       </div>
     </section>
 
-    <section class="analytics-grid" id="analytics-grid">
-      <article class="metric-card"><p>Total books</p><strong id="metric-total">0</strong></article>
-      <article class="metric-card"><p>Average price</p><strong id="metric-average-price">£0.00</strong></article>
-      <article class="metric-card"><p>Average rating</p><strong id="metric-average-rating">0.0</strong></article>
-      <article class="metric-card"><p>Available books</p><strong id="metric-available">0</strong></article>
-      <article class="metric-card"><p>Highest price</p><strong id="metric-highest">£0.00</strong></article>
-      <article class="metric-card"><p>Lowest price</p><strong id="metric-lowest">£0.00</strong></article>
+    <section class="card" id="insights">
+      <h2>Book Intelligence</h2>
+      <ul id="insight-list" class="insight-list"></ul>
     </section>
 
-    <section class="panel charts-panel">
-      <h2>Dataset Insights</h2>
-      <div class="charts-grid">
-        <article>
-          <h3>Price distribution</h3>
-          <canvas id="price-chart" width="360" height="220"></canvas>
-        </article>
-        <article>
-          <h3>Rating distribution</h3>
-          <canvas id="rating-chart" width="360" height="220"></canvas>
-        </article>
-        <article>
-          <h3>Availability breakdown</h3>
-          <canvas id="availability-chart" width="360" height="220"></canvas>
-        </article>
-      </div>
+    <section class="card">
+      <h2>Value Score (0–100)</h2>
+      <p><strong>Formula:</strong> (<em>ratingNormalized × 0.7</em>) + (<em>priceDiscount × 0.3</em>)</p>
+      <p class="muted">ratingNormalized = (rating/5)×100, priceDiscount = better score for lower price against the dataset range.</p>
     </section>
 
-    <section class="panel">
-      <div class="section-header">
-        <h2>Book cards</h2>
-        <p id="results-summary">0 results</p>
+    <section class="card book-grid" aria-label="Book Explorer">
+      <div class="section-head">
+        <h2>Book Explorer</h2>
       </div>
-      <div id="empty-state" class="empty-state hidden">No books match your current filters.</div>
-      <div id="book-cards" class="card-grid" aria-live="polite"></div>
+      <div id="book-list" class="books"></div>
+      <p id="empty-state" class="empty-state" hidden>No books match your filters.</p>
     </section>
 
-    <section class="panel">
-      <div class="section-header">
-        <h2>Data table</h2>
-        <p>Click sortable headers to reorder.</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th><button class="sort-header" data-sort="title" type="button">Title</button></th>
-              <th><button class="sort-header" data-sort="price" type="button">Price</button></th>
-              <th><button class="sort-header" data-sort="rating" type="button">Rating</button></th>
-              <th><button class="sort-header" data-sort="availability" type="button">Availability</button></th>
-              <th>Product</th>
-            </tr>
-          </thead>
-          <tbody id="books-table-body"></tbody>
-        </table>
-      </div>
-      <div class="pagination">
-        <button id="prev-page" class="btn btn-outline" type="button">Previous</button>
-        <span id="page-info">Page 1 of 1</span>
-        <button id="next-page" class="btn btn-outline" type="button">Next</button>
+    <section class="card" id="about">
+      <h2>Data Source & Pipeline</h2>
+      <p>Source: <a href="https://books.toscrape.com/" target="_blank" rel="noopener noreferrer">Books to Scrape</a> • Collection: Bright Data Scraper Studio • Fields: Title, Price, Rating, Availability, Product URL.</p>
+      <div class="pipeline" aria-label="Data pipeline architecture">
+        <div>Target Website</div>
+        <span>↓</span>
+        <div>Bright Data Scraper Studio</div>
+        <span>↓</span>
+        <div>Structured CSV/JSON</div>
+        <span>↓</span>
+        <div>Data Processing</div>
+        <span>↓</span>
+        <div>BOOKSCOPE Dashboard</div>
+        <span>↓</span>
+        <div>Insights & Recommendations</div>
       </div>
     </section>
-
-    <section class="panel presentation-grid">
-      <article>
-        <h2>How it works</h2>
-        <p>The scraper captures structured book listings from Books to Scrape, stores output in the <code>data/</code> folder, and this dashboard loads that data client-side at runtime.</p>
-      </article>
-      <article>
-        <h2>Technology & architecture</h2>
-        <p>Static GitHub Pages-ready frontend built with semantic HTML, modern CSS, and modular vanilla JavaScript for parsing, analytics, filtering, charting, and exporting.</p>
-      </article>
-      <article>
-        <h2>Scraper statistics</h2>
-        <p id="scraper-statistics">Awaiting dataset load...</p>
-      </article>
-    </section>
-  </main>
-
-  <dialog id="book-modal" class="book-modal">
-    <article>
-      <button id="modal-close" class="modal-close" type="button" aria-label="Close">×</button>
-      <h2 id="modal-title">Book details</h2>
-      <img id="modal-image" alt="Book cover" class="hidden" />
-      <div id="modal-content"></div>
-      <a id="modal-link" class="btn" href="#" target="_blank" rel="noopener noreferrer">View Product</a>
-    </article>
-  </dialog>
+  </div>
 
   <script src="Script.js"></script>
 </body>
