@@ -1,20 +1,144 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Books Web Scraper</title>
+  <title>BOOKSCOPE — Web Data Intelligence</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <h1>Books Web Scraper</h1>
-  <p>Structured book data collected using Bright Data Scraper Studio.</p>
+  <div class="app-shell">
+    <nav class="navbar">
+      <div>
+        <p class="brand">BOOKSCOPE</p>
+        <p class="tagline">Web Data → Intelligence → Decision</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#explore">Explore</a></li>
+        <li><a href="#insights">Insights</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </nav>
 
-  <div id="books">
-    <p>Book data will appear here.</p>
+    <header class="hero" id="dashboard">
+      <div>
+        <p class="status-pill" id="dataset-status">Loading dataset…</p>
+        <h1>Turn scraped book data into actionable intelligence.</h1>
+        <p class="hero-copy">BOOKSCOPE transforms structured web-scraped book data into searchable analytics, comparisons, and intelligent recommendations.</p>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric"><span id="hero-count">0</span><small>Books Indexed</small></div>
+        <div class="metric"><span id="hero-updated">—</span><small>Last Updated</small></div>
+        <div class="metric"><span>Books to Scrape</span><small>Data Source</small></div>
+      </div>
+    </header>
+
+    <section class="kpi-grid" aria-label="KPI Dashboard">
+      <article class="card"><h2>Total Books</h2><p id="kpi-total">0</p></article>
+      <article class="card"><h2>Avg Price</h2><p id="kpi-avg-price">£0.00</p></article>
+      <article class="card"><h2>Avg Rating</h2><p id="kpi-avg-rating">0.00</p></article>
+      <article class="card"><h2>In Stock %</h2><p id="kpi-in-stock">0%</p></article>
+      <article class="card"><h2>Highest Rated</h2><p id="kpi-highest">—</p></article>
+      <article class="card"><h2>Lowest Price</h2><p id="kpi-lowest">—</p></article>
+    </section>
+
+    <section class="card controls" id="explore">
+      <h2>Search & Filter</h2>
+      <div class="controls-grid">
+        <label>Search title
+          <input id="search-input" type="search" placeholder="Search books by title">
+        </label>
+        <label>Minimum rating
+          <select id="rating-filter">
+            <option value="0">All ratings</option>
+            <option value="1">1+ Stars</option>
+            <option value="2">2+ Stars</option>
+            <option value="3">3+ Stars</option>
+            <option value="4">4+ Stars</option>
+            <option value="5">5 Stars</option>
+          </select>
+        </label>
+        <label>Minimum price (£)
+          <input id="min-price-filter" type="number" min="0" step="0.01" placeholder="0">
+        </label>
+        <label>Maximum price (£)
+          <input id="max-price-filter" type="number" min="0" step="0.01" placeholder="100">
+        </label>
+        <label>Availability
+          <select id="availability-filter">
+            <option value="all">All</option>
+            <option value="in-stock">In Stock</option>
+            <option value="out-of-stock">Out of Stock</option>
+          </select>
+        </label>
+        <label>Sort by
+          <select id="sort-select">
+            <option value="price-asc">Price: Low → High</option>
+            <option value="price-desc">Price: High → Low</option>
+            <option value="rating-desc">Rating: High → Low</option>
+            <option value="title-asc">Title: A → Z</option>
+          </select>
+        </label>
+      </div>
+      <p id="result-count" class="result-count">0 books shown</p>
+    </section>
+
+    <section class="chart-grid" aria-label="Data Visualization">
+      <article class="card"><h2>Price Distribution</h2><div id="price-chart" class="chart"></div></article>
+      <article class="card"><h2>Rating Distribution</h2><div id="rating-chart" class="chart"></div></article>
+      <article class="card"><h2>Availability Distribution</h2><div id="availability-chart" class="chart"></div></article>
+      <article class="card"><h2>Rating vs Price</h2><svg id="scatter-chart" class="scatter-chart" viewBox="0 0 440 220" role="img" aria-label="Rating versus price scatter chart"></svg></article>
+    </section>
+
+    <section class="card smart-picks">
+      <h2>Smart Picks</h2>
+      <div class="pick-grid">
+        <div><h3>Best Value</h3><div id="pick-best-value" class="pick-list"></div></div>
+        <div><h3>Top Rated</h3><div id="pick-top-rated" class="pick-list"></div></div>
+        <div><h3>Budget Picks</h3><div id="pick-budget" class="pick-list"></div></div>
+        <div><h3>In Stock Picks</h3><div id="pick-stock" class="pick-list"></div></div>
+      </div>
+    </section>
+
+    <section class="card" id="insights">
+      <h2>Book Intelligence</h2>
+      <ul id="insight-list" class="insight-list"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Value Score (0–100)</h2>
+      <p><strong>Formula:</strong> (<em>ratingNormalized × 0.7</em>) + (<em>priceDiscount × 0.3</em>)</p>
+      <p class="muted">ratingNormalized = (rating/5)×100, priceDiscount = better score for lower price against the dataset range.</p>
+    </section>
+
+    <section class="card book-grid" aria-label="Book Explorer">
+      <div class="section-head">
+        <h2>Book Explorer</h2>
+      </div>
+      <div id="book-list" class="books"></div>
+      <p id="empty-state" class="empty-state" hidden>No books match your filters.</p>
+    </section>
+
+    <section class="card" id="about">
+      <h2>Data Source & Pipeline</h2>
+      <p>Source: <a href="https://books.toscrape.com/" target="_blank" rel="noopener noreferrer">Books to Scrape</a> • Collection: Bright Data Scraper Studio • Fields: Title, Price, Rating, Availability, Product URL.</p>
+      <div class="pipeline" aria-label="Data pipeline architecture">
+        <div>Target Website</div>
+        <span>↓</span>
+        <div>Bright Data Scraper Studio</div>
+        <span>↓</span>
+        <div>Structured CSV/JSON</div>
+        <span>↓</span>
+        <div>Data Processing</div>
+        <span>↓</span>
+        <div>BOOKSCOPE Dashboard</div>
+        <span>↓</span>
+        <div>Insights & Recommendations</div>
+      </div>
+    </section>
   </div>
-  <script src="script.js"></script>
+
+  <script src="Script.js"></script>
 </body>
 </html>
