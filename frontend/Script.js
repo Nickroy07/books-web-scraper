@@ -141,8 +141,7 @@ function normalizeBook(row) {
 
   return {
     title: row.title || "Untitled",
-    price,
-    priceLabel: price === null ? "N/A" : `£${price.toFixed(2)}`,
+    price,priceLabel: price === null ? "N/A" : `£${price.toFixed(2)}`,
     rating,
     ratingText: row.rating || "Unknown",
     availability: availability.text,
