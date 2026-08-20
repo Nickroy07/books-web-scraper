@@ -89,6 +89,11 @@ BookScope takes structured book data collected via **Bright Data Scraper Studio*
 
 ## 🏗️ Architecture
 
+![Architecture Diagram](screenshots/architecture-diagram.svg)
+
+<details>
+<summary>Text version of the pipeline</summary>
+
 ```
 Target Website (Books to Scrape)
             ↓
@@ -102,6 +107,8 @@ Target Website (Books to Scrape)
             ↓
    Insights & Recommendations
 ```
+
+</details>
 
 The scraper collects structured data (title, price, rating, availability, product URL) which is exported as CSV/JSON. The frontend dashboard reads this dataset directly and powers all filters, KPIs, charts, and smart recommendations — no backend server required.
 
