@@ -1,97 +1,213 @@
-# BOOKSCOPE — Web Data → Intelligence → Decision
+# 📚 BOOKSCOPE
+### Turn scraped book data into actionable intelligence.
 
-BOOKSCOPE turns scraped book data from Books to Scrape into a SaaS-style intelligence dashboard for discovery, comparison, and decision support.
+![Status](https://img.shields.io/badge/status-complete-brightgreen)
+![Made with](https://img.shields.io/badge/frontend-HTML%20%7C%20CSS%20%7C%20JS-blue)
+![Data Source](https://img.shields.io/badge/data-Bright%20Data%20Scraper%20Studio-orange)
+![License](https://img.shields.io/badge/license-MIT-yellow)
 
-## Problem
-Raw scraped datasets are useful, but hard to explore quickly for trends, opportunities, and value.
+An interactive web analytics dashboard that transforms structured book data into searchable insights, comparisons, visual analytics, and recommendations.
 
-## Solution
-BOOKSCOPE processes the real scraped dataset (CSV + JSON sample) and delivers:
-- KPI analytics
-- Search/filter/sort exploration
-- Smart recommendations
-- Auto-generated dataset insights
-- Transparent value scoring
+---
 
-## Why this matters
-Structured web data becomes more valuable when users can rapidly identify price bands, rating quality, availability, and best-value options.
+## 🔗 Live Demo
+### 👉 [View BookScope Live](https://nickroy07.github.io/books-web-scraper/)
 
-## Features
-- Professional dark analytics dashboard UI
-- Real-time KPIs from live dataset
-- Search by title
-- Filters: rating, price range, availability
-- Sorting: price low/high, rating high, title A-Z
-- Visualizations:
-  - Price distribution
-  - Rating distribution
-  - Availability split
-  - Rating vs price scatter
-- Smart Picks:
-  - Best Value
-  - Top Rated
-  - Budget Picks
-  - In Stock Picks
-- Book Intelligence insights (labeled as Dataset Insight)
-- Value Score (0–100): `(ratingNormalized * 0.7) + (priceDiscount * 0.3)`
+---
 
-## Architecture / Pipeline
+## 🖼️ Screenshots
+
+**Dashboard**
+![Dashboard](screenshots/dashboard.png)
+
+**Analytics**
+![Analytics](screenshots/analytics.png)
+
+**Insights & Book Explorer**
+![Insights](screenshots/insights-explorer.png)
+
+**Data Pipeline / About**
+![About](screenshots/about-pipeline.png)
+
+**Smart Picks**
+![Smart Picks](screenshots/smart-picks.png)
+
+**Mobile View**
+![Mobile View](screenshots/mobile-view.png)
+
+---
+
+## ❓ Problem
+
+Raw scraped product data (like from an e-commerce book catalog) is hard to make sense of on its own. A plain list of titles, prices, and ratings doesn't tell you which books are actually worth buying, how prices and ratings relate, or what's trending in stock — someone has to manually dig through it to find anything useful.
+
+## 💡 Solution
+
+BookScope takes structured book data collected via **Bright Data Scraper Studio** and turns it into a full analytics dashboard — with search, filters, visual charts, and smart recommendation logic — so users can explore and understand the dataset in seconds instead of scrolling through raw rows.
+
+---
+
+## ✨ Key Features
+
+**📊 Overview KPIs**
+- Total Books
+- Average Price
+- Average Rating
+- In-Stock Percentage
+- Highest-Rated Book
+- Lowest-Price Book
+
+**🔎 Search & Filter**
+- Title search
+- Rating filter
+- Min/Max price filter
+- Availability filter
+- Sorting options
+
+**📈 Visual Analytics**
+- Price Distribution chart
+- Rating Distribution chart
+- Availability Distribution chart
+- Rating vs. Price scatter chart
+
+**🎯 Smart Picks**
+- Best Value
+- Top Rated
+- Budget Picks
+- In Stock Picks
+
+**🧠 Book Intelligence**
+- Value Score for each book
+
+**📖 Book Explorer**
+- Browse full dataset with direct links to original product pages
+
+**🔄 Transparent Data Pipeline**
+- Dashboard shows how the data flows from scraping to insights
+
+---
+
+## 🏗️ Architecture
+
+```
 Target Website (Books to Scrape)
-↓
-Bright Data Scraper Studio
-↓
-Structured CSV / JSON
-↓
-Frontend Data Processing
-↓
-BOOKSCOPE Dashboard
-↓
-Insights & Recommendations
+            ↓
+   Bright Data Scraper Studio
+            ↓
+   Structured CSV / JSON Data
+            ↓
+      Data Processing
+            ↓
+     BOOKSCOPE Dashboard
+            ↓
+   Insights & Recommendations
+```
 
-## Bright Data integration
-Data collection is performed with Bright Data Scraper Studio. Scraper logic remains in `scraper/interaction-code.js`.
+The scraper collects structured data (title, price, rating, availability, product URL) which is exported as CSV/JSON. The frontend dashboard reads this dataset directly and powers all filters, KPIs, charts, and smart recommendations — no backend server required.
 
-## Dataset
-Main dataset:
-- `/data/j_msx13h3f10nyknkkpk.csv` (1000 books)
+---
 
-Sample dataset:
-- `/data/example-output.json`
+## 🗂️ Dataset
 
-Parsed fields used in UI:
+Data was collected from **Books to Scrape** using **Bright Data Scraper Studio**, capturing:
+
 - Title
 - Price
 - Rating
 - Availability
 - Product URL
 
-## Frontend
-- `/frontend/index.html`
-- `/frontend/style.css`
-- `/frontend/Script.js`
+Main dataset (1000 books): `data/j_msx13h3f10nyknkkpk.csv`
+Sample dataset: `data/example-output.json`
 
-Root redirect for GitHub Pages:
-- `/index.html` → `/frontend/index.html`
+---
 
-## Screenshots
-- Add dashboard screenshots here.
+## 🛠️ Tech Stack
 
-## Run locally
-Open `frontend/index.html` through a local static server (recommended):
+| Layer | Technology |
+|---|---|
+| Data Collection | Bright Data Scraper Studio |
+| Data Storage | CSV / JSON |
+| Frontend | HTML, CSS, JavaScript |
+
+---
+
+## 🚀 How to Run
 
 ```bash
+# Clone the repository
+git clone https://github.com/nickroy07/books-web-scraper.git
 cd books-web-scraper
+
+# Start a local static server (recommended)
 python -m http.server 8000
 ```
 
 Then open:
-- `http://localhost:8000/frontend/index.html`
+```
+http://localhost:8000/frontend/index.html
+```
 
-## GitHub Pages deployment
-The repository root `index.html` redirects to the dashboard at `frontend/index.html`, keeping paths relative and compatible with `/books-web-scraper/` hosting.
+> ⚠️ Opening `frontend/index.html` directly by double-clicking may not load the dataset correctly due to browser restrictions on local file access — running it through a local server is recommended.
 
-## Future improvements
-- Category-level trend analysis
-- Time-series snapshots over multiple scraper runs
-- Export filtered views
-- User-defined scoring weights
+The live version is also deployed via **GitHub Pages**, where the root `index.html` redirects to `frontend/index.html`.
+
+---
+
+## 👥 Team
+
+| Name | Role |
+|---|---|
+| Nikhil Chandrakant Mahale | Team Lead — Bright Data setup, GitHub repo & integration |
+| Tejal | Frontend — UI/Dashboard development |
+| Awaj Aekram | Presentation — PPT, demo script & speaking |
+| Apeksha Kaushik | Testing & Documentation — Data testing, README, and submission evidence |
+
+---
+
+## 🙏 Acknowledgments
+
+- **[Books to Scrape](http://books.toscrape.com/)** — the source website used for the dataset
+- **Bright Data Scraper Studio** — for structured data collection
+- Built as part of a hackathon submission by Team BookScope
+
+---
+
+## 🔮 Future Improvements
+
+- Live/scheduled scraping instead of static dataset
+- Backend + database for persistent storage
+- User accounts and saved book lists
+- Price-drop tracking and alerts
+- Expanded dataset beyond a single source site
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📁 Project Structure
+
+```
+books-web-scraper/
+│
+├── index.html                    (redirects to frontend/index.html — for GitHub Pages)
+│
+├── data/
+│   ├── example-output.json
+│   └── j_msx13h3f10nyknkkpk.csv
+│
+├── frontend/
+│   ├── index.html
+│   ├── Script.js
+│   ├── style.css
+│   └── README.md
+│
+├── scraper/
+│   └── interaction-code.js
+│
+└── README.md
+```
