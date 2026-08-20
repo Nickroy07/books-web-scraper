@@ -1,74 +1,73 @@
-# books-web-scraper
-Web scraping project built with Bright Data Scraper Studio for collecting structured book data.
+# Books Web Scraper Dashboard
 
-# Books Web Scraper
-
-A web scraping project built using Bright Data Scraper Studio to collect structured book data from Books to Scrape.
-
-## Project Overview
-
-This project collects book information from the Books to Scrape website and stores the scraped results in a structured format.
-
-The collected data includes:
-
-- Book title
-- Price
-- Rating
-- Availability
-- Product page URL
-
-## Data Source
-
-Website: https://books.toscrape.com/
-
-
-The scraper was created and executed using Bright Data Scraper Studio.
+A Bright Data scraper + static web dashboard that turns scraped book data into an interactive analytics experience.
 
 ## Project Structure
 
 ```text
 books-web-scraper/
-│
 ├── data/
 │   ├── example-output.json
-│   └── scraped-books.csv
-│
+│   └── j_msx13h3f10nyknkkpk.csv
 ├── frontend/
-│   └── Frontend application
-│
-├── scraper/
-│   └── interaction-code.js
-│
-└── README.md
+│   ├── index.html
+│   ├── style.css
+│   └── Script.js
+└── scraper/
+    └── interaction-code.js
+```
 
-Example Structured Output
+## Data Format Inspected
 
-The project includes an example JSON output in:
+The dashboard dynamically reads existing files from `data/` (without modifying them):
 
-data/example-output.json
+- `example-output.json` includes fields like:
+  - `title`
+  - `price` (string like `£54.00`)
+  - `rating` (word values like `Five`)
+  - `availability`
+  - `product_page_url`
+- `j_msx13h3f10nyknkkpk.csv` includes:
+  - `title`, `price`, `rating`, `availability`
+  - `product_url` (cover image URL)
+  - `product_page_url`
+  - metadata fields (`input_url`, `warning`, `error`, etc.)
 
-The complete scraped dataset is available as a CSV file inside the data folder.
+`Script.js` safely normalizes both formats (price parsing, rating mapping, availability normalization) and falls back from CSV to JSON if needed.
 
-Bright Data Scraper Studio
+## Dashboard Features
 
-Bright Data Scraper Studio was used to create and run the web scraper.
+- Responsive modern UI with hero section and professional cards/table
+- Loading state, empty-state messaging, and data-load error banner
+- Live search by title
+- Filters: rating, availability, min/max price
+- Sorting: title, price, rating (card/table integrated)
+- Analytics cards:
+  - total books
+  - average price
+  - average rating
+  - available books
+  - highest/lowest price
+- Lightweight client-side charts (canvas):
+  - price distribution
+  - rating distribution
+  - availability breakdown
+- Paginated data table with sortable headers
+- Book details modal with “View Product” button
+- Export filtered dataset as JSON or CSV
+- Dark/light theme toggle
+- Presentation sections: How it works, architecture, scraper statistics
 
-The scraper collects structured book information and exports the results for further use by the project frontend.
+## GitHub Pages / Local Viewing
 
-Frontend
+This project remains static-site compatible.
 
-The frontend will use the collected book data to display the scraped information in a user-friendly interface.
+1. Open `frontend/index.html` in a static server context (or via GitHub Pages).
+2. Ensure the `data/` folder remains present at repository root.
 
-AI Assistance
+Because data is fetched client-side, direct `file://` opening may be blocked by browser security in some environments. A local static server is recommended for local preview.
 
-AI coding assistance was used during development for guidance, documentation, debugging, and implementation support. The team reviewed and verified the generated content and understands the submitted project.
+## Data Source
 
-Team Contribution
-
-The project is developed collaboratively by the team. Different members are responsible for scraping/data collection, frontend development, documentation, presentation, and project integration.
-
-Demo
-
-A demo video will be added to this repository before final submission.
-
-
+- https://books.toscrape.com/
+- Scraper built and executed with Bright Data Scraper Studio.
